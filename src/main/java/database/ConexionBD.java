@@ -20,7 +20,7 @@ public class ConexionBD {
                 System.out.println("Conexión OK");
             } catch (SQLException e) {
                 System.out.println("Error en la conexión");
-                e.printStackTrace();
+                //e.printStackTrace();
             } catch (InvalidModuleDescriptorException e) {
                 System.out.println("Error PAM");
             }

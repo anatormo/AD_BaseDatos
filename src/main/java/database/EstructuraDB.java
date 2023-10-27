@@ -1,11 +1,9 @@
 package database;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-public class gestionDB {
+public class EstructuraDB {
     public static void crearBD() {
 
         try {
@@ -22,7 +20,7 @@ public class gestionDB {
     public static void crearTablaInsernadoDatos() {
         //creamos la tabla DEPARTAMENTOS y solo se va a ejecutar una vez
         try (
-            Connection miCon = ConexionBD.conectar("miBD")) {
+                Connection miCon = ConexionBD.conectar("miBD")) {
             String tablaDep = "CREATE TABLE departamentos (\n" +
                     " dept_no  TINYINT(2) NOT NULL PRIMARY KEY,\n" +
                     " dnombre  VARCHAR(15), \n" +
@@ -45,8 +43,9 @@ public class gestionDB {
         }
         //creamos la tabla EMPLEADOS y sus sentencias
 
-        try(Connection miCon = ConexionBD.conectar("miBD")){
-            String tablaDep = "CREATE TABLE empleados (emp_no    SMALLINT(4)  NOT NULL PRIMARY KEY,\n" +
+        try (Connection miCon = ConexionBD.conectar("miBD")) {
+            String tablaDep = "CREATE TABLE empleados (" +
+                    "emp_no    SMALLINT(4)  NOT NULL PRIMARY KEY,\n" +
                     " apellido  VARCHAR(10),\n" +
                     " oficio    VARCHAR(10),\n" +
                     " dir       SMALLINT,\n" +
@@ -75,9 +74,14 @@ public class gestionDB {
             listaSentencias.add("INSERT INTO empleados VALUES (7902,'FERNANDEZ','ANALISTA',7566,'1991/12/03',3000,NULL,20);");
             listaSentencias.add("INSERT INTO empleados VALUES (7934,'MUNOZ','EMPLEADO',7782,'1992/01/23',1690,NULL,10);");
 
-            for (String lista : listaSentencias){
+            for (String lista : listaSentencias) {
                 crearTabalDep.execute(String.valueOf(lista));
             }
+        } catch (SQLSyntaxErrorException e) {
+            System.out.println("Error en la sintaxis de la sentencia SQL" + e.getMessage());
+
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("La sentencia SQL no cumple los requisitos de integridad de la base de datos" + e.getMessage());
         } catch (SQLException e) {
             System.out.println("Error al conectar");
         }
